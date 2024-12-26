@@ -69,20 +69,44 @@ public class Main extends Application {
 
     // Scene creation for main menu
     Scene mainScene = new Scene(mainLayout, 500, 500);
+
+
+
+
+
+
+
+
     
     /** Create list page */
     // Button creation
-    Button backButton = new Button();
-    backButton.setText("Back to main menu");
+    Button C_backButton = new Button();
+    C_backButton.setText("Back to main menu");
 
     // Label manager creation
     StackPane createListLayout = new StackPane();
-    createListLayout.getChildren().addAll(backButton);
+    createListLayout.getChildren().addAll(C_backButton);
 
 
     // Scene Creation for create list page 
     Scene createListScene = new Scene(createListLayout, 500,500);
 
+
+
+
+
+    /** Load list page */
+    // Button creation
+    Button L_backButton = new Button();
+    L_backButton.setText("Back to main menu");
+
+    // Label manager creation
+    StackPane loadListLayout = new StackPane();
+    loadListLayout.getChildren().addAll(L_backButton);
+
+
+    // Scene Creation for create list page 
+    Scene loadListScene = new Scene(loadListLayout, 500,500);
     
     // Buttons ot handle user events such as navigating pages
     buttonCreateList.setOnAction(new EventHandler<ActionEvent>() {
@@ -98,16 +122,23 @@ public class Main extends Application {
         @Override
         public void handle(ActionEvent event) {
             System.out.println("button 2 works");
+            primaryStage.setScene(loadListScene);
         }
     });
 
-    backButton.setOnAction(new EventHandler<ActionEvent>() {
+    C_backButton.setOnAction(new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
             primaryStage.setScene(mainScene); // Switch back to Main Page
         }
     });
 
+    L_backButton.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            primaryStage.setScene(mainScene); // Switch back to Main Page
+        }
+    });
 
     primaryStage.setScene(mainScene);
     primaryStage.show();

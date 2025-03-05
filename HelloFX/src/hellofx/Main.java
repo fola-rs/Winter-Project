@@ -40,162 +40,126 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
     primaryStage.setTitle("ListAI");
-    /** Main menu */
 
-    VBox vbox = new VBox(10);
-    
-    // Create a header section
+    /** ==================== MAIN MENU PAGE ==================== */
+    // Create header section
     VBox headerSection = new VBox(5);
     headerSection.setAlignment(Pos.CENTER);
     headerSection.setPadding(new Insets(20, 0, 30, 0));
     headerSection.setStyle("-fx-background-color: #f0f0f0; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;");
 
-    // Enhanced welcome label
     Label welcome = new Label("Welcome to GroceryNotes");
     welcome.setFont(new Font("Arial Bold", 36));
     welcome.setStyle("-fx-text-fill: #2c3e50;");
 
-    // Add a subtitle
     Label subtitle = new Label("Your Smart Shopping Assistant");
     subtitle.setFont(new Font("Arial", 16));
     subtitle.setStyle("-fx-text-fill: #7f8c8d;");
 
     headerSection.getChildren().addAll(welcome, subtitle);
 
-    // Button creation
-    Button buttonCreateList = new Button();
-    buttonCreateList.setText("Create List");
-    buttonCreateList.setPrefSize(150,200);
-    buttonCreateList.setStyle("-fx-font-size: 14px; -fx-cursor: hand;");
+    // Main menu buttons
+    Button buttonCreateList = new Button("Create List");
+    buttonCreateList.setPrefSize(200, 150);
+    buttonCreateList.setStyle("-fx-font-size: 18px; "
+            + "-fx-cursor: hand; "
+            + "-fx-background-color: #4CAF50; "
+            + "-fx-text-fill: white; "
+            + "-fx-background-radius: 8px; "
+            + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);");
 
-    Button buttonLoadList = new Button();
-    buttonLoadList.setPrefSize(150, 200);
-    buttonLoadList.setText("Load List");
-    buttonLoadList.setStyle("-fx-font-size: 14px; -fx-cursor: hand;");
+    Button buttonLoadList = new Button("Load List");
+    buttonLoadList.setPrefSize(200, 150);
+    buttonLoadList.setStyle("-fx-font-size: 18px; "
+            + "-fx-cursor: hand; "
+            + "-fx-background-color: #2196F3; "
+            + "-fx-text-fill: white; "
+            + "-fx-background-radius: 8px; "
+            + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);");
 
-    // Layout for this page 
-    vbox.getChildren().addAll(buttonCreateList, buttonLoadList);
-    vbox.setPadding(new Insets(20, 0, 0, 20));  // Add some padding to the button container
+    VBox mainButtonsContainer = new VBox(20);
+    mainButtonsContainer.setAlignment(Pos.CENTER);
+    mainButtonsContainer.setPadding(new Insets(40));
+    mainButtonsContainer.getChildren().addAll(buttonCreateList, buttonLoadList);
 
-    // Layout manager creation
     BorderPane mainLayout = new BorderPane();
     mainLayout.setTop(headerSection);
-    mainLayout.setLeft(vbox);
+    mainLayout.setCenter(mainButtonsContainer);
     mainLayout.setStyle("-fx-background-color: white;");
 
-    // Scene creation for main menu
     Scene mainScene = new Scene(mainLayout, 500, 500);
 
-
-
-
-
-
-
-
-    
-    /** Create list page */
-    // Layout creation
+    /** ==================== CREATE LIST PAGE ==================== */
     AnchorPane createListLayout = new AnchorPane();
+    createListLayout.setStyle("-fx-background-color: white;");
 
-    // Button creation
-    Button C_backButton = new Button();
-    C_backButton.setText("Back to main menu");
-    C_backButton.setPrefSize(120,30);
-    C_backButton.setStyle("-fx-cursor: hand;");
-    AnchorPane.setLeftAnchor(C_backButton, 10.0);
-    AnchorPane.setBottomAnchor(C_backButton, 10.0);
-
-
-    Button saveButton = new Button();
-    saveButton.setText("Save list");
-    saveButton.setPrefSize(120,30);
-    saveButton.setStyle("-fx-cursor: hand;");
-    AnchorPane.setRightAnchor(saveButton, 10.0);
-    AnchorPane.setBottomAnchor(saveButton, 10.0);
-    
-    // Label creation
     Label createList = new Label("Write your notes here");
-    createList.setFont(new Font ("Arial", 30));
-    createList.setPadding(new Insets(0,0,20,0));
-    AnchorPane.setTopAnchor(createList, 10.0);
-    AnchorPane.setLeftAnchor(createList, 210.0);
+    createList.setFont(new Font("Arial", 30));
+    createList.setPadding(new Insets(0, 0, 20, 0));
+    AnchorPane.setTopAnchor(createList, 20.0);
+    AnchorPane.setLeftAnchor(createList, 20.0);
 
+    Button C_backButton = new Button("Back to main menu");
+    C_backButton.setPrefSize(150, 40);
+    C_backButton.setStyle("-fx-font-size: 14px; "
+            + "-fx-cursor: hand; "
+            + "-fx-background-color: #95a5a6; "
+            + "-fx-text-fill: white; "
+            + "-fx-background-radius: 5px; "
+            + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);");
+    AnchorPane.setLeftAnchor(C_backButton, 20.0);
+    AnchorPane.setBottomAnchor(C_backButton, 20.0);
 
-
-    
+    Button saveButton = new Button("Save list");
+    saveButton.setPrefSize(150, 40);
+    saveButton.setStyle("-fx-font-size: 14px; "
+            + "-fx-cursor: hand; "
+            + "-fx-background-color: #27ae60; "
+            + "-fx-text-fill: white; "
+            + "-fx-background-radius: 5px; "
+            + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);");
+    AnchorPane.setRightAnchor(saveButton, 20.0);
+    AnchorPane.setBottomAnchor(saveButton, 20.0);
 
     createListLayout.getChildren().addAll(C_backButton, saveButton, createList);
+    Scene createListScene = new Scene(createListLayout, 700, 700);
 
+    /** ==================== LOAD LIST PAGE ==================== */
+    BorderPane loadListLayout = new BorderPane();
+    loadListLayout.setStyle("-fx-background-color: white;");
 
-    // Scene Creation for create list page 
-    Scene createListScene = new Scene(createListLayout, 700,700);
-
-
-
-
-
-    /** Load list page */
-
-    // Button creation
-    Button L_backButton = new Button();
-    L_backButton.setText("Back to main menu");
-    L_backButton.setStyle("-fx-cursor: hand;");
-
-    // Label manager creation
-    StackPane loadListLayout = new StackPane();
-    loadListLayout.getChildren().addAll(L_backButton);
-
-
-    // Scene Creation for create list page 
-    Scene loadListScene = new Scene(loadListLayout, 500,500);
+    Button L_backButton = new Button("Back to main menu");
+    L_backButton.setPrefSize(150, 40);
+    L_backButton.setStyle("-fx-font-size: 14px; "
+            + "-fx-cursor: hand; "
+            + "-fx-background-color: #95a5a6; "
+            + "-fx-text-fill: white; "
+            + "-fx-background-radius: 5px; "
+            + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);");
     
+    loadListLayout.setBottom(L_backButton);
+    BorderPane.setMargin(L_backButton, new Insets(20));
+    BorderPane.setAlignment(L_backButton, Pos.CENTER_LEFT);
 
+    Scene loadListScene = new Scene(loadListLayout, 500, 500);
 
-
-
-
-
-
-
-
-
-
-    /**  Buttons to handle user events such as navigating pages */
-    buttonCreateList.setOnAction(new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-            System.out.println("button pressed");
-            primaryStage.setScene(createListScene);// Switch to Create List Page
-        }
+    /** ==================== EVENT HANDLERS ==================== */
+    buttonCreateList.setOnAction(event -> {
+        System.out.println("Create List button pressed");
+        primaryStage.setScene(createListScene);
     });
 
-    buttonLoadList.setOnAction(new EventHandler<ActionEvent>() {
-        
-        @Override
-        public void handle(ActionEvent event) {
-            System.out.println("button 2 works");
-            primaryStage.setScene(loadListScene);
-        }
+    buttonLoadList.setOnAction(event -> {
+        System.out.println("Load List button pressed");
+        primaryStage.setScene(loadListScene);
     });
 
-    C_backButton.setOnAction(new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-            primaryStage.setScene(mainScene); // Switch back to Main Page
-        }
-    });
+    C_backButton.setOnAction(event -> primaryStage.setScene(mainScene));
+    L_backButton.setOnAction(event -> primaryStage.setScene(mainScene));
 
-    L_backButton.setOnAction(new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-            primaryStage.setScene(mainScene); // Switch back to Main Page
-        }
-    });
-
+    /** ==================== START APPLICATION ==================== */
     primaryStage.setScene(mainScene);
     primaryStage.show();
-
     }
 
 

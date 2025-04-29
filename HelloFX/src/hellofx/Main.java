@@ -93,12 +93,21 @@ public class Main extends Application {
     AnchorPane createListLayout = new AnchorPane();
     createListLayout.setStyle("-fx-background-color: white;");
 
-    Label createList = new Label("Write your notes here");
+    // Label for the main prompt
+    Label createList = new Label("Write your grocery list here");
     createList.setFont(new Font("Arial", 30));
     createList.setPadding(new Insets(0, 0, 20, 0));
     AnchorPane.setTopAnchor(createList, 20.0);
     AnchorPane.setLeftAnchor(createList, 20.0);
 
+    // TextField for user input
+    TextArea listInputField = new TextArea();
+    listInputField.setPromptText("Enter your list items here..."); // Placeholder text
+    listInputField.setPrefWidth(400); // Set preferred width
+    AnchorPane.setTopAnchor(listInputField, 100.0); // Position below the createList label
+    AnchorPane.setLeftAnchor(listInputField, 50.0); // Center it horizontally
+
+    // Back button
     Button C_backButton = new Button("Back to main menu");
     C_backButton.setPrefSize(150, 40);
     C_backButton.setStyle("-fx-font-size: 14px; "
@@ -110,6 +119,7 @@ public class Main extends Application {
     AnchorPane.setLeftAnchor(C_backButton, 20.0);
     AnchorPane.setBottomAnchor(C_backButton, 20.0);
 
+    // Save button
     Button saveButton = new Button("Save list");
     saveButton.setPrefSize(150, 40);
     saveButton.setStyle("-fx-font-size: 14px; "
@@ -121,7 +131,8 @@ public class Main extends Application {
     AnchorPane.setRightAnchor(saveButton, 20.0);
     AnchorPane.setBottomAnchor(saveButton, 20.0);
 
-    createListLayout.getChildren().addAll(C_backButton, saveButton, createList);
+    // Add all components to the layout
+    createListLayout.getChildren().addAll(C_backButton, saveButton, createList, listInputField);
     Scene createListScene = new Scene(createListLayout, 700, 700);
 
     /** ==================== LOAD LIST PAGE ==================== */

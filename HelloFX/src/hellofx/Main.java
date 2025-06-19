@@ -35,11 +35,14 @@ import java.io.*;
 import java.util.*;
 
 public class Main extends Application {
-
+    private Database db;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-    primaryStage.setTitle("ListAI");
+    primaryStage.setTitle("App");
+        db = new Database();
+        db.connect();
+
 
     /** ==================== MAIN MENU PAGE ==================== */
     // Create header section
@@ -75,7 +78,7 @@ public class Main extends Application {
             + "-fx-background-color: #2196F3; "
             + "-fx-text-fill: white; "
             + "-fx-background-radius: 8px; "
-            + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);");
+            + "-fx-effecct: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);");
 
     VBox mainButtonsContainer = new VBox(20);
     mainButtonsContainer.setAlignment(Pos.CENTER);
@@ -90,11 +93,28 @@ public class Main extends Application {
     Scene mainScene = new Scene(mainLayout, 500, 500);
 
     /** ==================== CREATE LIST PAGE ==================== */
-    AnchorPane createListLayout = new AnchorPane();
-    createListLayout.setStyle("-fx-background-color: white;");
+    // Reuse the header section for a consistent look
+    VBox createListHeader = new VBox(5);
+    createListHeader.setAlignment(Pos.CENTER);
+    createListHeader.setPadding(new Insets(20, 0, 30, 0));
+    createListHeader.setStyle("-fx-background-color: #f0f0f0; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;");
+
+    Label createListTitle = new Label("Create a New List");
+    createListTitle.setFont(new Font("Arial Bold", 36));
+    createListTitle.setStyle("-fx       -text-fill: #2c3e50;");
+
+    Label createListSubtitle = new Label("Add your shopping list details below");
+    createListSubtitle.setFont(new Font("Arial", 16));
+    createListSubtitle.setStyle("-fx-text-fill: #7f8c8d;");
+
+    createListHeader.getChildren().addAll(createListTitle, createListSubtitle);
+
+    // Layout for input fields and buttons
+    AnchorPane createListContent = new AnchorPane();
+    createListContent.setStyle("-fx-background-color: white;");
 
     // Label for the main prompt
-    Label createList = new Label("Write your grocery list here");
+    Label createList = new Label("Create lists here");
     createList.setFont(new Font("Arial", 30));
     createList.setPadding(new Insets(0, 0, 20, 0));
     AnchorPane.setTopAnchor(createList, 20.0);
@@ -102,8 +122,15 @@ public class Main extends Application {
 
     // TextField for user input
     TextArea listInputField = new TextArea();
+    TextArea listTitle = new TextArea();
+    listTitle.setPromptText("Enter your list title here..."); // Placeholder text
     listInputField.setPromptText("Enter your list items here..."); // Placeholder text
-    listInputField.setPrefWidth(400); // Set preferred width
+    listTitle.setPrefWidth(150);
+    listTitle.setPrefHeight(30);
+    listInputField.setPrefHeight(300); // Set preferred height
+    listInputField.setPrefWidth(200); // Set preferred width
+    AnchorPane.setTopAnchor(listTitle, 60.0); // Top margin
+    AnchorPane.setLeftAnchor(listTitle, 50.0);
     AnchorPane.setTopAnchor(listInputField, 100.0); // Position below the createList label
     AnchorPane.setLeftAnchor(listInputField, 50.0); // Center it horizontally
 
@@ -132,7 +159,14 @@ public class Main extends Application {
     AnchorPane.setBottomAnchor(saveButton, 20.0);
 
     // Add all components to the layout
-    createListLayout.getChildren().addAll(C_backButton, saveButton, createList, listInputField);
+    createListContent.getChildren().addAll(C_backButton, saveButton, listTitle, listInputField);
+
+    // Use a BorderPane to mimic the main menu layout
+    BorderPane createListLayout = new BorderPane();
+    createListLayout.setTop(createListHeader);
+    createListLayout.setCenter(createListContent);
+    createListLayout.setStyle("-fx-background-color: white;");
+
     Scene createListScene = new Scene(createListLayout, 700, 700);
 
     /** ==================== LOAD LIST PAGE ==================== */
@@ -156,13 +190,32 @@ public class Main extends Application {
 
     /** ==================== EVENT HANDLERS ==================== */
     buttonCreateList.setOnAction(event -> {
-        System.out.println("Create List button pressed");
         primaryStage.setScene(createListScene);
     });
 
     buttonLoadList.setOnAction(event -> {
-        System.out.println("Load List button pressed");
         primaryStage.setScene(loadListScene);
+    });
+
+    saveButton.setOnAction(event -> {
+        String listText = listInputField.getText();
+        String titleText = listTitle.getText();
+        System.out.println(titleText);
+        System.out.println();
+        System.out.println(listText);
+
+        String InsertSQL = "INSERT INTO lists(content, title) Values(?, ?)";
+        try (var conn = db.connect();
+             var pstmt = conn.prepareStatement(InsertSQL)) {
+            pstmt.setString(1, listText);
+            pstmt.setString(2, titleText);
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+        }
+        listInputField.clear();
+        listTitle.clear();
     });
 
     C_backButton.setOnAction(event -> primaryStage.setScene(mainScene));

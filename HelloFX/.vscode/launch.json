@@ -9,7 +9,8 @@
             "name": "Main",
             "request": "launch",
             "mainClass": "hellofx.Main",
-            "projectName": "HelloFX_eec03acf"
+            "projectName": "HelloFX_eec03acf",
+            "vmArgs": "--module-path C:\\Users\\folas\\Downloads\\openjfx-23.0.1_windows-x64_bin-sdk\\javafx-sdk-23.0.1\\lib --add-modules javafx.controls,javafx.fxml"
         },
         {
             "type": "java",
@@ -23,7 +24,8 @@
             "name": "Main",
             "request": "launch",
             "mainClass": "hellofx.Main",
-            "projectName": "HelloFX_233f2b76"
+            "projectName": "HelloFX_233f2b76",
+            "vmArgs": "--module-path C:\\Users\\folas\\Downloads\\openjfx-23.0.1_windows-x64_bin-sdk\\javafx-sdk-23.0.1\\lib --add-modules javafx.controls,javafx.fxml"
         }
     ]
 }

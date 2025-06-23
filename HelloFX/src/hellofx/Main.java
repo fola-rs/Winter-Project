@@ -30,6 +30,11 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.*;
 import java.util.*;
@@ -161,7 +166,7 @@ public class Main extends Application {
     // Add all components to the layout
     createListContent.getChildren().addAll(C_backButton, saveButton, listTitle, listInputField);
 
-    // Use a BorderPane to mimic the main menu layout
+    
     BorderPane createListLayout = new BorderPane();
     createListLayout.setTop(createListHeader);
     createListLayout.setCenter(createListContent);
@@ -182,6 +187,32 @@ public class Main extends Application {
             + "-fx-background-radius: 5px; "
             + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);");
     
+    
+    final TableView dbTable = new TableView();
+    dbTable.setEditable(true);
+    TableColumn TitleColumn = new TableColumn("Title");
+    TitleColumn.setMinWidth(100);
+    TitleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+    TableColumn ContentColumn = new TableColumn("Content");
+    ContentColumn.setMinWidth(300);
+    ContentColumn.setCellValueFactory(new PropertyValueFactory<>("content"));
+    TableColumn CreatedAtColumn = new TableColumn("Created At");
+    CreatedAtColumn.setMinWidth(50);
+    CreatedAtColumn.setCellValueFactory(new PropertyValueFactory<>("created_at"));
+
+    ObservableList<ListItem> data = FXCollections.observableArrayList();
+    for (Map<String, Object> list : db.loadLists()) {
+        String title = (String) list.get("title");
+        String content = (String) list.get("content");
+        String createdAt = (String) list.get("created_at");
+        data.add(new ListItem(title, content, createdAt));
+    }
+    dbTable.setItems(data);
+
+    dbTable.getColumns().addAll(TitleColumn, ContentColumn, CreatedAtColumn);
+
+    loadListLayout.setCenter(dbTable);
+
     loadListLayout.setBottom(L_backButton);
     BorderPane.setMargin(L_backButton, new Insets(20));
     BorderPane.setAlignment(L_backButton, Pos.CENTER_LEFT);

@@ -33,6 +33,8 @@ import javafx.stage.Stage;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -85,10 +87,20 @@ public class Main extends Application {
             + "-fx-background-radius: 8px; "
             + "-fx-effecct: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);");
 
+    // Add this new button for Recipe Searcher
+    Button buttonRecipeSearcher = new Button("Recipe Searcher");
+    buttonRecipeSearcher.setPrefSize(200, 150);
+    buttonRecipeSearcher.setStyle("-fx-font-size: 18px; "
+            + "-fx-cursor: hand; "
+            + "-fx-background-color: #FF9800; "
+            + "-fx-text-fill: white; "
+            + "-fx-background-radius: 8px; "
+            + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);");
+
     VBox mainButtonsContainer = new VBox(20);
     mainButtonsContainer.setAlignment(Pos.CENTER);
     mainButtonsContainer.setPadding(new Insets(40));
-    mainButtonsContainer.getChildren().addAll(buttonCreateList, buttonLoadList);
+    mainButtonsContainer.getChildren().addAll(buttonCreateList, buttonLoadList, buttonRecipeSearcher);
 
     BorderPane mainLayout = new BorderPane();
     mainLayout.setTop(headerSection);
@@ -217,17 +229,60 @@ public class Main extends Application {
     BorderPane.setMargin(L_backButton, new Insets(20));
     BorderPane.setAlignment(L_backButton, Pos.CENTER_LEFT);
 
-    Scene loadListScene = new Scene(loadListLayout, 500, 500);
+    Scene loadListScene = new Scene(loadListLayout, 700, 700);
+
+    /** ==================== RECIPE SEARCHER =================== */
+    VBox recipeSearcherHeader = new VBox(5);
+    recipeSearcherHeader.setAlignment(Pos.CENTER);
+    recipeSearcherHeader.setPadding(new Insets(20, 0, 30, 0));
+    recipeSearcherHeader.setStyle("-fx-background-color: #f0f0f0; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;");
+
+    Label recipeSearcherTitle = new Label("Import image of foods");
+    recipeSearcherTitle.setFont(new Font("Arial Bold", 36));
+    recipeSearcherTitle.setStyle("-fx-text-fill: #2c3e50;");
+
+    Label recipeSearcherSubtitle = new Label("Find recipes based on your ingredients");
+    recipeSearcherSubtitle.setFont(new Font("Arial", 16));
+    recipeSearcherSubtitle.setStyle("-fx-text-fill: #7f8c8d;");
+
+    recipeSearcherHeader.getChildren().addAll(recipeSearcherTitle, recipeSearcherSubtitle);
+
+
+    VBox recipeSearcherContent = new VBox(20);
+    recipeSearcherContent.setAlignment(Pos.CENTER);
+    // Example placeholder (add your own controls as needed)
+    Label placeholder = new Label("Recipe searcher functionality coming soon!");
+    placeholder.setFont(new Font("Arial", 18));
+    recipeSearcherContent.getChildren().add(placeholder);
+
+    Button addPictures = new Button();
+    Image image = new Image("file:/C:/University_or_Work/Winter_Project/HelloFX/Blue_Plus.png");
+    ImageView imageview = new ImageView(image);
+
+    addPictures.setGraphic(imageview);
+    addPictures.setStyle("-fx-background-color: lightgray; -fx-cursor: hand;");
+
+    BorderPane recipeSearcherLayout = new BorderPane();
+    recipeSearcherLayout.setTop(recipeSearcherHeader);
+    recipeSearcherLayout.setCenter(addPictures);
+    recipeSearcherLayout.setStyle("-fx-background-color: white;");
+
+    Scene recipeSearcherScene = new Scene(recipeSearcherLayout, 700, 700);
 
     /** ==================== EVENT HANDLERS ==================== */
+
+    // MAIN MENU PAGE EVENT HANDLERS
     buttonCreateList.setOnAction(event -> {
         primaryStage.setScene(createListScene);
     });
-
     buttonLoadList.setOnAction(event -> {
         primaryStage.setScene(loadListScene);
     });
+    buttonRecipeSearcher.setOnAction(event -> {
+        primaryStage.setScene(recipeSearcherScene);
+    });
 
+    // CREATE LIST PAGE EVENT HANDLERS
     saveButton.setOnAction(event -> {
         String listText = listInputField.getText();
         String titleText = listTitle.getText();
@@ -235,22 +290,28 @@ public class Main extends Application {
         System.out.println();
         System.out.println(listText);
 
-        String InsertSQL = "INSERT INTO lists(content, title) Values(?, ?)";
+        String InsertSQL = "INSERT INTO lists(title, content) VALUES(?, ?)";
         try (var conn = db.connect();
              var pstmt = conn.prepareStatement(InsertSQL)) {
-            pstmt.setString(1, listText);
-            pstmt.setString(2, titleText);
+            pstmt.setString(1, titleText);
+            pstmt.setString(2, listText);
             pstmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
-            
         }
         listInputField.clear();
         listTitle.clear();
     });
-
     C_backButton.setOnAction(event -> primaryStage.setScene(mainScene));
+
+    // LOAD LIST PAGE EVENT HANDLERS
     L_backButton.setOnAction(event -> primaryStage.setScene(mainScene));
+
+    // RECIPE SEARCHER EVENT HANDLERS
+    addPictures.setOnAction(event -> {
+        // Placeholder for image upload functionality
+        System.out.println("Image upload functionality coming soon!");
+    });
 
     /** ==================== START APPLICATION ==================== */
     primaryStage.setScene(mainScene);

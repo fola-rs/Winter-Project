@@ -23,20 +23,25 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 import java.io.*;
 import java.util.*;
@@ -309,8 +314,16 @@ public class Main extends Application {
 
     // RECIPE SEARCHER EVENT HANDLERS
     addPictures.setOnAction(event -> {
-        // Placeholder for image upload functionality
-        System.out.println("Image upload functionality coming soon!");
+        if (Desktop.isDesktopSupported()) {
+            Desktop desktop = Desktop.getDesktop();
+            if (desktop.isSupported(Desktop.Action.OPEN)) {
+                try {
+                    desktop.open(new File(System.getProperty("user.home")));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     });
 
     /** ==================== START APPLICATION ==================== */
